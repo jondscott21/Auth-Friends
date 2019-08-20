@@ -1,19 +1,36 @@
 import React, { useEffect, useState } from 'react';
-import {axiosWithAuth} from '../utils/axiosWithAuth'
+import Friend from './Friend';
+import { useSelector, useDispatch } from 'react-redux';
+import { getAllFriends, addFriends } from '../actions' 
 
 export default function Friends() {
-    const [friends, setFriends] = useState([]);
+    const friends = useSelector(state => state.friends)
+    const [newFriend, setNewFriend] = useState({name: '', age: '', email: ''})
+    const dispatch = useDispatch()
     useEffect(() => {
-        axiosWithAuth().get('http://localhost:5000/api/friends')
-        .then(res => {
-            console.log(res.data);
-            setFriends(friends => [...friends, res.data])
-        })
+        dispatch(getAllFriends())
     }, [])
-    console.log(friends)
+
+    const handleChange = (e) => {
+        setNewFriend({
+            ...newFriend, [e.target.name]: e.target.value
+        })
+    }
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        dispatch(addFriends(newFriend))
+    }
+
     return (
     <div>
+        <form onSubmit={handleSubmit}>
+            <input type='text' name="name" value={newFriend.username} placeholder='Name' onChange={handleChange} ></input>
+            <input type='text' name="age" value={newFriend.age} placeholder='Age' onChange={handleChange} ></input>
+            <input type='email' name="email" value={newFriend.email} placeholder='Email' onChange={handleChange} ></input>
+            <button>Add Friend</button>
+        </form>
         <h1>Friends!</h1>
+        {friends && friends.map(friend => <Friend key={friend.id} friend={friend} />)}
     </div>
     )
 }
