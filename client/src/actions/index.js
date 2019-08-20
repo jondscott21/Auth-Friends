@@ -9,6 +9,10 @@ export const FETCH_FRIENDS_START = 'FETCH_FRIENDS_START';
 export const FETCH_FRIENDS_SUCCESS = 'FETCH_FRIENDS_SUCCESS';
 export const FETCH_FRIENDS_FAILURE = 'FETCH_FRIENDS_FAILURE';
 
+export const FETCH_A_FRIEND_START = 'FETCH_A_FRIEND_START';
+export const FETCH_A_FRIEND_SUCCESS = 'FETCH_A_FRIEND_SUCCESS';
+export const FETCH_A_FRIEND_FAILURE = 'FETCH_A_FRIEND_FAILURE';
+
 export const ADD_FRIENDS_START = 'ADD_FRIENDS_START';
 export const ADD_FRIENDS_SUCCESS = 'ADD_FRIENDS_SUCCESS';
 export const ADD_FRIENDS_FAILURE = 'ADD_FRIENDS_FAILURE';
@@ -49,6 +53,21 @@ export const getAllFriends = () => {
   };
 };
 
+export const getOneFriend = (id) => {
+    return dispatch => {
+      dispatch({ type: FETCH_A_FRIEND_START });
+      axiosWithAuth()
+        .get(`http://localhost:5000/api/friends/${id}`)
+        .then(res => {
+            console.log(res.data)
+          dispatch({ type: FETCH_A_FRIEND_SUCCESS, payload: res.data });
+        })
+        .catch(err => {
+          dispatch({ type: FETCH_A_FRIEND_FAILURE, payload: err.response });
+        });
+    };
+  };
+
 export const addFriends = (obj) => {
   return dispatch => {
     dispatch({type: ADD_FRIENDS_START, payload: obj})
@@ -64,11 +83,11 @@ export const addFriends = (obj) => {
   }
 }
 
-export const deleteData = (id) => {
+export const deleteFriend = (id) => {
     return dispatch => {
       dispatch({ type: DELETE_FRIENDS_START });
-      axios
-        .delete(`http://localhost:3333/smurfs/${id}`)
+      axiosWithAuth()
+        .delete(`http://localhost:5000/api/friends/${id}`)
         .then(res => {
           dispatch({ type: DELETE_FRIENDS_SUCCESS, payload: id });
         })
