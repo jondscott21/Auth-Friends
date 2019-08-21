@@ -10,13 +10,13 @@ export default function Friend({friend}) {
     }
 
     return (
-        <Link className='link' to={`/friends/${friend.id}`}>
-            <div className='friend-card'>
+        <div className='friend-card'>
+            <Link className='link' to={`/friends/${friend.id}`}>
                 <h3>{friend.name}</h3>
                 <p>age: {friend.age}</p>
                 <p>{friend.email}</p>
-                <button onClick={handleClick}>Unfriend</button>
-            </div>
-        </Link>
+            </Link>
+            <button onClick={handleClick}>Unfriend</button>
+        </div>
     )
 }
