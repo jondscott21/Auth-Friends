@@ -1,0 +1,14 @@
+.App {
+  text-align: center;
+}
+
+.friend-card {
+  margin: 10px auto;
+  border: black solid 1px;
+  width: 15%;
+  color: black;
+}
+
+.link {
+  text-decoration: none;
+}
